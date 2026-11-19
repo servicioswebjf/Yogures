@@ -1,0 +1,310 @@
+const PRECIO = 13000;
+
+function cambiarCantidad(id, valor){
+
+const campo = document.getElementById(id);
+
+if(!campo) return;
+
+let cantidad = Number(campo.value);
+
+cantidad += valor;
+
+if(cantidad < 0){
+cantidad = 0;
+}
+
+campo.value = cantidad;
+}
+
+function obtenerPedidos(){
+
+return JSON.parse(
+localStorage.getItem("pedidos")
+) || [];
+}
+
+function guardarPedido(){
+
+const cliente =
+document.getElementById("cliente").value.trim();
+
+const melocoton =
+Number(document.getElementById("melocoton").value);
+
+const mora =
+Number(document.getElementById("mora").value);
+
+const pina =
+Number(document.getElementById("pina").value);
+
+const unidades =
+melocoton + mora + pina;
+
+if(cliente === ""){
+alert("Ingrese un nombre");
+return;
+}
+
+if(unidades === 0){
+alert("Debe agregar al menos un yogurt");
+return;
+}
+
+const total = unidades * PRECIO;
+
+const pedidos = obtenerPedidos();
+
+pedidos.push({
+id: Date.now(),
+cliente,
+melocoton,
+mora,
+pina,
+estado:"Pendiente",
+total
+});
+
+localStorage.setItem(
+"pedidos",
+JSON.stringify(pedidos)
+);
+
+alert("Pedido guardado correctamente");
+
+document.getElementById("cliente").value="";
+document.getElementById("melocoton").value=0;
+document.getElementById("mora").value=0;
+document.getElementById("pina").value=0;
+}
+
+function mostrarPedidos(){
+
+const pedidos = obtenerPedidos();
+
+const lista =
+document.getElementById("listaPedidos");
+
+if(!lista) return;
+
+if(pedidos.length === 0){
+
+lista.innerHTML = `
+<div class="card">
+No existen pedidos registrados
+</div>
+`;
+
+return;
+}
+
+lista.innerHTML="";
+
+pedidos.forEach(p=>{
+
+lista.innerHTML += `
+<div class="tarjeta-pedido">
+
+<h3>${p.cliente}</h3>
+
+<p>🍑 Melocotón: ${p.melocoton}</p>
+
+<p>🫐 Mora: ${p.mora}</p>
+
+<p>🍍 Piña: ${p.pina}</p>
+
+<p>
+<strong>
+Total:
+$${p.total.toLocaleString("es-CO")}
+</strong>
+</p>
+
+<div class="estado ${
+p.estado === "Pagado"
+? "pagado"
+: "pendiente"
+}">
+${p.estado}
+</div>
+
+<div class="botones">
+
+<button
+class="pagar"
+onclick="cambiarEstado(${p.id})">
+💵 Estado
+</button>
+
+<button
+class="editar"
+onclick="editarPedido(${p.id})">
+✏ Editar
+</button>
+
+<button
+class="eliminar"
+onclick="eliminarPedido(${p.id})">
+🗑 Eliminar
+</button>
+
+</div>
+
+</div>
+`;
+});
+
+}
+
+function cambiarEstado(id){
+
+let pedidos = obtenerPedidos();
+
+let pedido =
+pedidos.find(p=>p.id===id);
+
+if(!pedido) return;
+
+pedido.estado =
+pedido.estado === "Pagado"
+? "Pendiente"
+: "Pagado";
+
+localStorage.setItem(
+"pedidos",
+JSON.stringify(pedidos)
+);
+
+mostrarPedidos();
+}
+
+function editarPedido(id){
+
+let pedidos = obtenerPedidos();
+
+let pedido =
+pedidos.find(p=>p.id===id);
+
+if(!pedido) return;
+
+pedido.cliente =
+prompt(
+"Nombre",
+pedido.cliente
+) || pedido.cliente;
+
+pedido.melocoton =
+Number(
+prompt(
+"Cantidad Melocotón",
+pedido.melocoton
+)
+);
+
+pedido.mora =
+Number(
+prompt(
+"Cantidad Mora",
+pedido.mora
+)
+);
+
+pedido.pina =
+Number(
+prompt(
+"Cantidad Piña",
+pedido.pina
+)
+);
+
+pedido.total =
+(
+pedido.melocoton +
+pedido.mora +
+pedido.pina
+) * PRECIO;
+
+localStorage.setItem(
+"pedidos",
+JSON.stringify(pedidos)
+);
+
+mostrarPedidos();
+}
+
+function eliminarPedido(id){
+
+let pedidos = obtenerPedidos();
+
+pedidos =
+pedidos.filter(
+p=>p.id!==id
+);
+
+localStorage.setItem(
+"pedidos",
+JSON.stringify(pedidos)
+);
+
+mostrarPedidos();
+}
+
+function vaciarPedidos(){
+
+if(confirm(
+"¿Eliminar todos los pedidos?"
+)){
+
+localStorage.removeItem("pedidos");
+
+mostrarPedidos();
+
+}
+}
+
+function mostrarContabilidad(){
+
+const pedidos = obtenerPedidos();
+
+let ventas = 0;
+let pagado = 0;
+let pendiente = 0;
+
+let melocoton = 0;
+let mora = 0;
+let pina = 0;
+
+pedidos.forEach(p=>{
+
+ventas += p.total;
+
+if(p.estado === "Pagado"){
+pagado += p.total;
+}else{
+pendiente += p.total;
+}
+
+melocoton += p.melocoton;
+mora += p.mora;
+pina += p.pina;
+
+});
+
+document.getElementById("totalVentas").textContent =
+"$" + ventas.toLocaleString("es-CO");
+
+document.getElementById("totalPagado").textContent =
+"$" + pagado.toLocaleString("es-CO");
+
+document.getElementById("totalPendiente").textContent =
+"$" + pendiente.toLocaleString("es-CO");
+
+document.getElementById("totalMelocoton").textContent =
+melocoton;
+
+document.getElementById("totalMora").textContent =
+mora;
+
+document.getElementById("totalPina").textContent =
+pina;
+}

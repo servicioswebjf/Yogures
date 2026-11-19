@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contabilidad</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>💰 Contabilidad</h1>
+</header>
+
+<nav>
+    <a href="index.html">Nuevo Pedido</a>
+    <a href="pedidos.html">Pedidos</a>
+    <a href="contabilidad.html" class="active">Contabilidad</a>
+</nav>
+
+<div class="container">
+
+    <div class="contabilidad-grid">
+
+        <div class="card kpi">
+            <h3>Total Pagado</h3>
+            <p id="totalPagado">$0</p>
+        </div>
+
+        <div class="card kpi">
+            <h3>Total Pendiente</h3>
+            <p id="totalPendiente">$0</p>
+        </div>
+
+    </div>
+
+    <div class="card resumen">
+
+        <h2>Total General</h2>
+
+        <p id="totalVentas">$0</p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Ventas por sabor</h2>
+
+        <p>🍑 Melocotón: <strong id="totalMelocoton">0</strong></p>
+
+        <p>🫐 Mora: <strong id="totalMora">0</strong></p>
+
+        <p>🍍 Piña: <strong id="totalPina">0</strong></p>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+mostrarContabilidad();
+</script>
+
+</body>
+</html>

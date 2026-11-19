@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yogures Naturales</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🥛 Yogures Naturales</h1>
+</header>
+
+<nav>
+    <a href="index.html" class="active">Nuevo Pedido</a>
+    <a href="pedidos.html">Pedidos</a>
+    <a href="contabilidad.html">Contabilidad</a>
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Nuevo Pedido</h2>
+
+        <label>Nombre del comprador</label>
+        <input type="text" id="cliente">
+
+        <div class="sabor">
+            <span>🍑 Melocotón</span>
+            <div>
+                <button onclick="cambiarCantidad('melocoton',-1)">−</button>
+                <input type="number" id="melocoton" value="0">
+                <button onclick="cambiarCantidad('melocoton',1)">+</button>
+            </div>
+        </div>
+
+        <div class="sabor">
+            <span>🫐 Mora</span>
+            <div>
+                <button onclick="cambiarCantidad('mora',-1)">−</button>
+                <input type="number" id="mora" value="0">
+                <button onclick="cambiarCantidad('mora',1)">+</button>
+            </div>
+        </div>
+
+        <div class="sabor">
+            <span>🍍 Piña</span>
+            <div>
+                <button onclick="cambiarCantidad('pina',-1)">−</button>
+                <input type="number" id="pina" value="0">
+                <button onclick="cambiarCantidad('pina',1)">+</button>
+            </div>
+        </div>
+
+        <button class="guardar" onclick="guardarPedido()">
+            Guardar Pedido
+        </button>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
